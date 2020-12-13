@@ -134,7 +134,15 @@ class Game {
       this.#enemiesInterval--;
     }
     this.#updateScoreText();
+    if (!(this.#score % 100)) {
+      this.#livesPlus();
+    }
   }
+  #livesPlus() {
+    this.#lives++;
+    this.#updateLivesText();
+  }
+
   #updateLives() {
     this.#lives--;
     this.#updateLivesText();
@@ -143,7 +151,6 @@ class Game {
     if (!this.#lives) {
       this.#endGame();
     }
-    // if (!(this.#score % 5))
   }
   #updateScoreText() {
     this.#htmlELements.score.textContent = `Score: ${this.#score}`;
