@@ -40,7 +40,7 @@ export class Spaceship {
     this.container.appendChild(leftMove);
     leftMove.classList.add("leftMove");
     leftMove.innerHTML = "L";
-    leftMove.addEventListener("mousemove", () => {
+    leftMove.addEventListener("touchmove", () => {
       if (this.#getPosition() > 12) {
         this.element.style.left = `${
           parseInt(this.element.style.left, 10) - 10
@@ -52,7 +52,7 @@ export class Spaceship {
     this.container.appendChild(rightMove);
     rightMove.classList.add("rightMove");
     rightMove.innerHTML = "R";
-    rightMove.addEventListener("mousemove", () => {
+    rightMove.addEventListener("touchstart", () => {
       if (this.#getPosition() + 12 < window.innerWidth) {
         this.element.style.left = `${
           parseInt(this.element.style.left, 10) + 10
@@ -64,7 +64,7 @@ export class Spaceship {
     this.container.appendChild(upMove);
     upMove.classList.add("upMove");
     upMove.innerHTML = "U";
-    upMove.addEventListener("mousemove", () => {
+    upMove.addEventListener("touchend", () => {
       if (this.element.style.bottom !== "500px") {
         this.element.style.bottom = `${
           parseInt(this.element.style.bottom, 10) + 10
