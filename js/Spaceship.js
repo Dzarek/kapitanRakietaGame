@@ -28,6 +28,62 @@ export class Spaceship {
   }
 
   #eventListeners() {
+    const btnS = document.createElement("button");
+    this.container.appendChild(btnS);
+    btnS.classList.add("shoot");
+    btnS.innerHTML = "S";
+    btnS.addEventListener("click", () => {
+      this.#shot();
+    });
+
+    const leftMove = document.createElement("button");
+    this.container.appendChild(leftMove);
+    leftMove.classList.add("leftMove");
+    leftMove.innerHTML = "L";
+    leftMove.addEventListener("mousemove", () => {
+      if (this.#getPosition() > 12) {
+        this.element.style.left = `${
+          parseInt(this.element.style.left, 10) - 10
+        }px`;
+      }
+    });
+
+    const rightMove = document.createElement("button");
+    this.container.appendChild(rightMove);
+    rightMove.classList.add("rightMove");
+    rightMove.innerHTML = "R";
+    rightMove.addEventListener("mousemove", () => {
+      if (this.#getPosition() + 12 < window.innerWidth) {
+        this.element.style.left = `${
+          parseInt(this.element.style.left, 10) + 10
+        }px`;
+      }
+    });
+
+    const upMove = document.createElement("button");
+    this.container.appendChild(upMove);
+    upMove.classList.add("upMove");
+    upMove.innerHTML = "U";
+    upMove.addEventListener("mousemove", () => {
+      if (this.element.style.bottom !== "500px") {
+        this.element.style.bottom = `${
+          parseInt(this.element.style.bottom, 10) + 10
+        }px`;
+      }
+    });
+
+    const downMove = document.createElement("button");
+    this.container.appendChild(downMove);
+    downMove.classList.add("downMove");
+    downMove.innerHTML = "D";
+    downMove.addEventListener("mousemove", () => {
+      if (this.element.style.bottom !== "0px") {
+        this.element.style.bottom = `${
+          parseInt(this.element.style.bottom, 10) - 10
+        }px`;
+      }
+    });
+
     window.addEventListener("keydown", ({ keyCode }) => {
       switch (keyCode) {
         case 37:
