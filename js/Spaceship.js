@@ -26,62 +26,65 @@ export class Spaceship {
   #getPosition() {
     return this.element.offsetLeft + this.element.offsetWidth / 2;
   }
-
+  #touching() {
+    if (this.#getPosition() + 12 < window.innerWidth) {
+      this.element.style.left = `${
+        parseInt(this.element.style.left, 10) + 10
+      }px`;
+    }
+  }
   #eventListeners() {
     const btnS = document.createElement("button");
     this.container.appendChild(btnS);
     btnS.classList.add("shoot");
-    btnS.innerHTML = "S";
-    btnS.addEventListener("click", () => {
+    btnS.style.backgroundImage = "url(images/3.png)";
+    btnS.addEventListener("touchend", () => {
       this.#shot();
     });
 
     const leftMove = document.createElement("button");
     this.container.appendChild(leftMove);
     leftMove.classList.add("leftMove");
-    leftMove.innerHTML = "L";
-    leftMove.addEventListener("touchmove", () => {
-      if (this.#getPosition() > 12) {
-        this.element.style.left = `${
-          parseInt(this.element.style.left, 10) - 10
-        }px`;
-      }
+    leftMove.style.backgroundImage = "url(images/1.png)";
+    leftMove.addEventListener("touchstart", () => {
+      this.#leftArrow = true;
+    });
+    leftMove.addEventListener("touchend", () => {
+      this.#leftArrow = false;
     });
 
     const rightMove = document.createElement("button");
     this.container.appendChild(rightMove);
     rightMove.classList.add("rightMove");
-    rightMove.innerHTML = "R";
+    // rightMove.innerHTML = "R";
+    rightMove.style.backgroundImage = "url(images/1.png)";
     rightMove.addEventListener("touchstart", () => {
-      if (this.#getPosition() + 12 < window.innerWidth) {
-        this.element.style.left = `${
-          parseInt(this.element.style.left, 10) + 10
-        }px`;
-      }
+      this.#rightArrow = true;
+    });
+    rightMove.addEventListener("touchend", () => {
+      this.#rightArrow = false;
     });
 
     const upMove = document.createElement("button");
     this.container.appendChild(upMove);
     upMove.classList.add("upMove");
-    upMove.innerHTML = "U";
+    upMove.style.backgroundImage = "url(images/1.png)";
+    upMove.addEventListener("touchstart", () => {
+      this.#upArrow = true;
+    });
     upMove.addEventListener("touchend", () => {
-      if (this.element.style.bottom !== "500px") {
-        this.element.style.bottom = `${
-          parseInt(this.element.style.bottom, 10) + 10
-        }px`;
-      }
+      this.#upArrow = false;
     });
 
     const downMove = document.createElement("button");
     this.container.appendChild(downMove);
     downMove.classList.add("downMove");
-    downMove.innerHTML = "D";
-    downMove.addEventListener("mousemove", () => {
-      if (this.element.style.bottom !== "0px") {
-        this.element.style.bottom = `${
-          parseInt(this.element.style.bottom, 10) - 10
-        }px`;
-      }
+    downMove.style.backgroundImage = "url(images/1.png)";
+    downMove.addEventListener("touchstart", () => {
+      this.#downArrow = true;
+    });
+    downMove.addEventListener("touchend", () => {
+      this.#downArrow = false;
     });
 
     window.addEventListener("keydown", ({ keyCode }) => {
