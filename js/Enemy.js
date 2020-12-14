@@ -1,4 +1,7 @@
+// import { EnemyMissile } from "./EnemyMissile.js";
+
 export class Enemy {
+  // enemyMissiles = [];
   constructor(container, intervalTime, enemyClass, explosionClass, lives = 1) {
     this.container = container;
     this.element = document.createElement("div");
@@ -11,11 +14,12 @@ export class Enemy {
   init() {
     this.#setEnemy();
     this.#updatePosition();
+    // this.#enemyBullet();
   }
   #setEnemy() {
     this.element.classList.add(this.enemyClass);
     this.container.appendChild(this.element);
-    this.element.style.top = "0px";
+    this.element.style.top = "10px";
     this.element.style.left = `${this.#randomPosition()}px`;
   }
 
@@ -51,4 +55,21 @@ export class Enemy {
     );
     setTimeout(() => this.element.remove(), animationTime);
   }
+  // #shot() {
+  //   const enemyMissile = new EnemyMissile(
+  //     this.#setNewPosition(),
+  //     this.element.offsetTop,
+  //     this.container
+  //   );
+  //   if (this.enemyMissiles.length < 20) {
+  //     enemyMissile.init();
+  //     this.enemyMissiles.push(enemyMissile);
+  //   }
+  // }
+
+  // #enemyBullet() {
+  //   if ((this.element.style.top = "100px")) {
+  //     this.#shot();
+  //   }
+  // }
 }
