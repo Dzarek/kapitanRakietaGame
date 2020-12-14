@@ -26,13 +26,7 @@ export class Spaceship {
   #getPosition() {
     return this.element.offsetLeft + this.element.offsetWidth / 2;
   }
-  #touching() {
-    if (this.#getPosition() + 12 < window.innerWidth) {
-      this.element.style.left = `${
-        parseInt(this.element.style.left, 10) + 10
-      }px`;
-    }
-  }
+
   #eventListeners() {
     const btnS = document.createElement("button");
     this.container.appendChild(btnS);
@@ -156,7 +150,9 @@ export class Spaceship {
       this.element.offsetTop,
       this.container
     );
-    missile.init();
-    this.missiles.push(missile);
+    if (this.missiles.length < 20) {
+      missile.init();
+      this.missiles.push(missile);
+    }
   }
 }
