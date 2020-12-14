@@ -30,7 +30,7 @@ class Game {
 
   #newGame() {
     this.#htmlELements.modal.classList.add("hide");
-    this.#enemiesInterval = 30;
+    this.#enemiesInterval = 20;
     this.#lives = 3;
     this.#score = 0;
     this.#updateLivesText();
@@ -53,26 +53,37 @@ class Game {
   }
 
   #randomNewEnemy() {
+    const randomNumber2 = Math.floor(Math.random() * 10) + 1;
     const randomNumber = Math.floor(Math.random() * 5) + 1;
-    randomNumber % 5
-      ? this.#createNewEnemy(
-          this.#htmlELements.container,
-          this.#enemiesInterval,
-          "enemy",
-          "explosion"
-        )
+    randomNumber2 % 10
+      ? randomNumber % 5
+        ? this.#createNewEnemy(
+            this.#htmlELements.container,
+            this.#enemiesInterval,
+            "enemy",
+            "explosion"
+          )
+        : this.#createNewEnemy(
+            this.#htmlELements.container,
+            this.#enemiesInterval * 2,
+            "enemy--big",
+            "explosion--big",
+            3
+          )
       : this.#createNewEnemy(
           this.#htmlELements.container,
-          this.#enemiesInterval * 2,
-          "enemy--big",
-          "explosion--big",
-          3
+          this.#enemiesInterval * 2.5,
+          "enemy--huge",
+          "explosion--huge",
+          10
         );
   }
   #createNewEnemy(...params) {
     const enemy = new Enemy(...params);
-    enemy.init();
-    this.#enemies.push(enemy);
+    if (this.#enemies.length < 12) {
+      enemy.init();
+      this.#enemies.push(enemy);
+    }
   }
 
   #checkPosition() {
@@ -130,7 +141,7 @@ class Game {
   }
   #updateScore() {
     this.#score++;
-    if (!(this.#score % 5)) {
+    if (!(this.#score % 4)) {
       this.#enemiesInterval--;
     }
     this.#updateScoreText();
@@ -161,6 +172,6 @@ class Game {
 }
 
 // window.onload = function () {
-  const game = new Game();
-  game.init();
+const game = new Game();
+game.init();
 // };
