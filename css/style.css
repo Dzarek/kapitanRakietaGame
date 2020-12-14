@@ -95,6 +95,8 @@ video {
   background-image: url('../images/ship.png');
   animation: move-8-units-X var(--animation-time) steps(8) infinite;
   position: fixed;
+  transform: scale(1.1);
+
 }
 
 .enemy {
@@ -114,6 +116,15 @@ video {
   position: fixed;
 }
 
+.enemy--huge {
+  width: calc(var(--size-unit) *2);
+  height: calc(var(--size-unit) *2);
+  background-image: url('../images/enemy-huge.png');
+  animation: move-4-units-X var(--animation-time) steps(2) infinite;
+  position: fixed;
+  transform: scale(2);
+}
+
 .explosion {
   width: var(--size-unit);
   height: var(--size-unit);
@@ -130,12 +141,39 @@ video {
   position: fixed;
 }
 
+.explosion--huge {
+  width: calc(var(--size-unit) *2);
+  height: calc(var(--size-unit) *2);
+  background-image: url('../images/explosion-big.png');
+  animation: move-34-units-X var(--explosion-animation-time) steps(17) forwards;
+  position: fixed;
+  transform: scale(2);
+}
+
 .missile {
   background-image: url('../images/missile.png');
   background-size: cover;
   width: 12px;
   height: 24px;
   position: absolute;
+}
+
+.enemy-missile {
+  background-image: url('../images/bullet.png');
+  background-size: cover;
+  width: 12px;
+  height: 24px;
+  position: absolute;
+}
+
+@keyframes move-4-units-X {
+  from {
+    background-position-x: 0px;
+  }
+
+  to {
+    background-position-x: calc(var(--size-unit) * -4);
+  }
 }
 
 @keyframes move-34-units-X {
