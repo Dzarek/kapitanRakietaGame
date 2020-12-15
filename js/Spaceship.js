@@ -1,12 +1,15 @@
 import { Missile } from "./Missile.js";
+import { MissileAtom } from "./MissileAtom.js";
 
 export class Spaceship {
   missiles = [];
+  missilesAtom = [];
   #modifier = 7;
   #leftArrow = false;
   #rightArrow = false;
   #upArrow = false;
   #downArrow = false;
+
   constructor(element, container) {
     this.element = element;
     this.container = container;
@@ -28,6 +31,18 @@ export class Spaceship {
   }
 
   #eventListeners() {
+    const atomBomb = document.createElement("button");
+    this.container.appendChild(atomBomb);
+    atomBomb.classList.add("atomBomb");
+    atomBomb.style.backgroundImage = "url(images/atombutton.png)";
+
+    atomBomb.addEventListener("touchend", () => {
+      this.#shotAtom();
+      if (this.missilesAtom.length === 3) {
+        atomBomb.style.opacity = 0.4;
+      }
+    });
+
     const btnS = document.createElement("button");
     this.container.appendChild(btnS);
     btnS.classList.add("shoot");
@@ -99,6 +114,12 @@ export class Spaceship {
     });
     window.addEventListener("keyup", ({ keyCode }) => {
       switch (keyCode) {
+        case 13:
+          this.#shotAtom();
+          if (this.missilesAtom.length === 3) {
+            atomBomb.style.opacity = 0.4;
+          }
+          break;
         case 32:
           this.#shot();
           break;
@@ -150,9 +171,25 @@ export class Spaceship {
       this.element.offsetTop,
       this.container
     );
-    if (this.missiles.length < 20) {
+    if (this.missiles.length < 10) {
       missile.init();
       this.missiles.push(missile);
     }
+  }
+
+  #shotAtom() {
+    const missileAtom = new MissileAtom(
+      this.#getPosition(),
+      this.element.offsetTop,
+      this.container
+    );
+    if (this.missilesAtom.length < 3) {
+      missileAtom.init();
+      this.missilesAtom.push(missileAtom);
+    }
+    // if (this.missilesAtom.length > 3) {
+    //   !missileAtom.init();
+    // }
+    // }
   }
 }
