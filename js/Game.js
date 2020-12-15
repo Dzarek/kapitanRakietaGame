@@ -80,7 +80,7 @@ class Game {
   }
   #createNewEnemy(...params) {
     const enemy = new Enemy(...params);
-    if (this.#enemies.length < 12) {
+    if (this.#enemies.length < 10) {
       enemy.init();
       this.#enemies.push(enemy);
     }
@@ -137,18 +137,43 @@ class Game {
           missileArr.splice(missileIndex, 1);
         }
       });
+
+      this.#ship.missilesAtom.forEach((missileAtom) => {
+        const missileAtomPosition = {
+          top: missileAtom.element.offsetTop,
+          right:
+            missileAtom.element.offsetLeft + missileAtom.element.offsetWidth,
+          bottom:
+            missileAtom.element.offsetTop + missileAtom.element.offsetHeight,
+          left: missileAtom.element.offsetLeft,
+        };
+        //
+        if (missileAtomPosition.bottom === enemyPosition.bottom) {
+          this.#enemies.forEach((enemy) => enemy.explode());
+          missileAtom.explode();
+          missileAtom.remove();
+
+          enemiesArr.splice(enemyIndex, 1);
+          this.#updateScore();
+        }
+        if (missileAtomPosition.bottom < 0) {
+          missileAtom.remove();
+        }
+      });
     });
   }
   #updateScore() {
     this.#score++;
-    if (!(this.#score % 4)) {
+    if (!(this.#score % 5)) {
       this.#enemiesInterval--;
     }
+
     this.#updateScoreText();
     if (!(this.#score % 100)) {
       this.#livesPlus();
     }
   }
+
   #livesPlus() {
     this.#lives++;
     this.#updateLivesText();
