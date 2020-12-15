@@ -1,195 +1,431 @@
-import { Missile } from "./Missile.js";
-import { MissileAtom } from "./MissileAtom.js";
+:root {
+  --primary-color: #09fced;
+  --secondary-color: #510303;
+  --size-unit: 64px;
+  --animation-time: 200ms;
+  --explosion-animation-time: 600ms;
+}
 
-export class Spaceship {
-  missiles = [];
-  missilesAtom = [];
-  #modifier = 7;
-  #leftArrow = false;
-  #rightArrow = false;
-  #upArrow = false;
-  #downArrow = false;
 
-  constructor(element, container) {
-    this.element = element;
-    this.container = container;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+
+body {
+  font-family: 'Lato', sans-serif;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+
+.container {
+  width: 100vw;
+  height: 100vh;
+  background-color: transparent;
+  position: absolute;
+}
+
+video {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  z-index: -20;
+  opacity: 1;
+}
+
+.information {
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 20px;
+  font-size: 32px;
+  z-index: 2;
+  position: relative;
+}
+
+.modal {
+  width: 100vw;
+  height: 100vh;
+  background-color: #000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 3;
+  display: flex;
+  color: #fff;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal__content {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.modal__text {
+  font-size: 42px;
+  text-align: center;
+}
+
+.modal__button {
+  padding: 30px 15px;
+  background-color: transparent;
+  border: 3px solid var(--primary-color);
+  color: var(--primary-color);
+  cursor: pointer;
+  font-size: 42px;
+  margin-top: 20px;
+  outline: none;
+  transition: box-shadow 0.1s;
+}
+
+.modal__button:hover {
+  box-shadow: 0px 0px 20px 5px var(--primary-color);
+}
+
+.spaceship {
+  width: var(--size-unit);
+  height: var(--size-unit);
+  background-image: url('../images/ship.png');
+  animation: move-8-units-X var(--animation-time) steps(8) infinite;
+  position: fixed;
+  transform: scale(1.1);
+
+}
+
+.enemy {
+  width: var(--size-unit);
+  height: var(--size-unit);
+  background-image: url('../images/enemy.png');
+  animation: move-5-units-X var(--animation-time) steps(5) infinite;
+  z-index: 1;
+  position: fixed;
+}
+
+.enemy--big {
+  width: calc(var(--size-unit) *2);
+  height: calc(var(--size-unit) *2);
+  background-image: url('../images/enemy-big.png');
+  animation: move-16-units-X var(--animation-time) steps(8) infinite;
+  position: fixed;
+}
+
+.enemy--huge {
+  width: calc(var(--size-unit) *2);
+  height: calc(var(--size-unit) *2);
+  background-image: url('../images/enemy-huge.png');
+  animation: move-4-units-X var(--animation-time) steps(2) infinite;
+  position: fixed;
+  transform: scale(2);
+}
+
+.explosion {
+  width: var(--size-unit);
+  height: var(--size-unit);
+  background-image: url('../images/explosion.png');
+  animation: move-17-units-X var(--explosion-animation-time) steps(17) forwards;
+  position: fixed;
+}
+
+.explosion--big {
+  width: calc(var(--size-unit) *2);
+  height: calc(var(--size-unit) *2);
+  background-image: url('../images/explosion-big.png');
+  animation: move-34-units-X var(--explosion-animation-time) steps(17) forwards;
+  position: fixed;
+}
+
+.explosion--huge {
+  width: calc(var(--size-unit) *2);
+  height: calc(var(--size-unit) *2);
+  background-image: url('../images/explosion-big.png');
+  animation: move-34-units-X var(--explosion-animation-time) steps(17) forwards;
+  position: fixed;
+  transform: scale(5);
+}
+
+.missile {
+  background-image: url('../images/missile.png');
+  background-size: cover;
+  width: 12px;
+  height: 24px;
+  position: absolute;
+}
+
+.missileAtom {
+  width: calc(var(--size-unit) *2);
+  height: calc(var(--size-unit) *2);
+  /* background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url(../images/atombomb.gif); */
+  background-image: url('../images/css_sprites.png');
+  animation: move-34-units-X var(--animation-time) steps(17) infinite;
+  position: fixed;
+
+  transform: scale(0.8);
+}
+
+.enemy-missile {
+  background-image: url('../images/bullet.png');
+  background-size: cover;
+  width: 12px;
+  height: 24px;
+  position: absolute;
+}
+
+@keyframes move-4-units-X {
+  from {
+    background-position-x: 0px;
   }
 
-  init() {
-    this.setPosition();
-    this.#eventListeners();
-    this.#gameLoop();
+  to {
+    background-position-x: calc(var(--size-unit) * -4);
   }
-  setPosition() {
-    this.element.style.bottom = "0px";
-    this.element.style.left = `${
-      window.innerWidth / 2 - this.#getPosition()
-    }px`;
-  }
-  #getPosition() {
-    return this.element.offsetLeft + this.element.offsetWidth / 2;
+}
+
+@keyframes move-34-units-X {
+  from {
+    background-position-x: 0px;
   }
 
-  #eventListeners() {
-    const atomBomb = document.createElement("button");
-    this.container.appendChild(atomBomb);
-    atomBomb.classList.add("atomBomb");
-    atomBomb.style.backgroundImage = "url(images/atombutton.png)";
-
-    atomBomb.addEventListener("touchend", () => {
-      this.#shotAtom();
-      if (this.missilesAtom.length === 3) {
-        atomBomb.style.opacity = 0.4;
-      }
-    });
-
-    const btnS = document.createElement("button");
-    this.container.appendChild(btnS);
-    btnS.classList.add("shoot");
-    btnS.style.backgroundImage = "url(images/3.png)";
-    btnS.addEventListener("touchend", () => {
-      this.#shot();
-    });
-
-    const leftMove = document.createElement("button");
-    this.container.appendChild(leftMove);
-    leftMove.classList.add("leftMove");
-    leftMove.style.backgroundImage = "url(images/1.png)";
-    leftMove.addEventListener("touchstart", () => {
-      this.#leftArrow = true;
-    });
-    leftMove.addEventListener("touchend", () => {
-      this.#leftArrow = false;
-    });
-
-    const rightMove = document.createElement("button");
-    this.container.appendChild(rightMove);
-    rightMove.classList.add("rightMove");
-    // rightMove.innerHTML = "R";
-    rightMove.style.backgroundImage = "url(images/1.png)";
-    rightMove.addEventListener("touchstart", () => {
-      this.#rightArrow = true;
-    });
-    rightMove.addEventListener("touchend", () => {
-      this.#rightArrow = false;
-    });
-
-    const upMove = document.createElement("button");
-    this.container.appendChild(upMove);
-    upMove.classList.add("upMove");
-    upMove.style.backgroundImage = "url(images/1.png)";
-    upMove.addEventListener("touchstart", () => {
-      this.#upArrow = true;
-    });
-    upMove.addEventListener("touchend", () => {
-      this.#upArrow = false;
-    });
-
-    const downMove = document.createElement("button");
-    this.container.appendChild(downMove);
-    downMove.classList.add("downMove");
-    downMove.style.backgroundImage = "url(images/1.png)";
-    downMove.addEventListener("touchstart", () => {
-      this.#downArrow = true;
-    });
-    downMove.addEventListener("touchend", () => {
-      this.#downArrow = false;
-    });
-
-    window.addEventListener("keydown", ({ keyCode }) => {
-      switch (keyCode) {
-        case 37:
-          this.#leftArrow = true;
-          break;
-        case 39:
-          this.#rightArrow = true;
-          break;
-        case 38:
-          this.#upArrow = true;
-          break;
-        case 40:
-          this.#downArrow = true;
-          break;
-      }
-    });
-    window.addEventListener("keyup", ({ keyCode }) => {
-      switch (keyCode) {
-        case 13:
-          this.#shotAtom();
-          if (this.missilesAtom.length === 3) {
-            atomBomb.style.opacity = 0.4;
-          }
-          break;
-        case 32:
-          this.#shot();
-          break;
-        case 37:
-          this.#leftArrow = false;
-          break;
-        case 39:
-          this.#rightArrow = false;
-          break;
-        case 38:
-          this.#upArrow = false;
-          break;
-        case 40:
-          this.#downArrow = false;
-          break;
-      }
-    });
+  to {
+    background-position-x: calc(var(--size-unit) * -34);
   }
-  #gameLoop = () => {
-    this.#whatKey();
-    requestAnimationFrame(this.#gameLoop);
-  };
-  #whatKey() {
-    if (this.#leftArrow && this.#getPosition() > 12) {
-      this.element.style.left = `${
-        parseInt(this.element.style.left, 10) - this.#modifier
-      }px`;
-    }
-    if (this.#rightArrow && this.#getPosition() + 12 < window.innerWidth) {
-      this.element.style.left = `${
-        parseInt(this.element.style.left, 10) + this.#modifier
-      }px`;
-    }
-    if (this.#upArrow && this.element.style.bottom !== "500px") {
-      this.element.style.bottom = `${
-        parseInt(this.element.style.bottom, 10) + this.#modifier
-      }px`;
-    }
-    if (this.#downArrow && this.element.style.bottom !== "0px") {
-      this.element.style.bottom = `${
-        parseInt(this.element.style.bottom, 10) - this.#modifier
-      }px`;
-    }
+}
+
+
+@keyframes move-17-units-X {
+  from {
+    background-position-x: 0px;
   }
 
-  #shot() {
-    const missile = new Missile(
-      this.#getPosition(),
-      this.element.offsetTop,
-      this.container
-    );
-    if (this.missiles.length < 10) {
-      missile.init();
-      this.missiles.push(missile);
-    }
+  to {
+    background-position-x: calc(var(--size-unit) * -17);
+  }
+}
+
+@keyframes move-16-units-X {
+  from {
+    background-position-x: 0px;
   }
 
-  #shotAtom() {
-    const missileAtom = new MissileAtom(
-      this.#getPosition(),
-      this.element.offsetTop,
-      this.container
-    );
-    if (this.missilesAtom.length < 3) {
-      missileAtom.init();
-      this.missilesAtom.push(missileAtom);
-    }
-    // if (this.missilesAtom.length > 3) {
-    //   !missileAtom.init();
-    // }
-    // }
+  to {
+    background-position-x: calc(var(--size-unit) * -16);
+  }
+}
+
+
+@keyframes move-8-units-X {
+  from {
+    background-position-x: 0px;
+  }
+
+  to {
+    background-position-x: calc(var(--size-unit) * -8);
+  }
+}
+
+@keyframes move-5-units-X {
+  from {
+    background-position-x: 0px;
+  }
+
+  to {
+    background-position-x: calc(var(--size-unit) * -5);
+  }
+}
+
+.hide {
+  display: none;
+}
+
+.hit {
+  background-color: var(--secondary-color);
+}
+
+.shoot {
+  display: none;
+  height: 45px;
+  width: 45px;
+  font-size: 25px;
+  position: fixed;
+  bottom: 5vh;
+  right: 8vw;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+}
+
+.atomBomb {
+  /* display: none; */
+  height: 40px;
+  width: 40px;
+  font-size: 25px;
+  position: fixed;
+  bottom: 16vh;
+  right: 2vw;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  transform: rotate(-90deg);
+}
+
+.leftMove {
+  display: none;
+  height: 40px;
+  width: 40px;
+  font-size: 25px;
+  position: fixed;
+  bottom: 8vh;
+  left: 1vw;
+
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  transform: rotate(180deg);
+
+}
+
+.rightMove {
+  display: none;
+  height: 40px;
+  width: 40px;
+  font-size: 25px;
+  position: fixed;
+  bottom: 8vh;
+  left: 17vw;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+
+}
+
+.upMove {
+  display: none;
+  height: 40px;
+  width: 40px;
+  font-size: 25px;
+  position: fixed;
+  bottom: 15vh;
+  left: 9vw;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  transform: rotate(-90deg);
+
+}
+
+.downMove {
+  display: none;
+  height: 40px;
+  width: 40px;
+  font-size: 25px;
+  position: fixed;
+  bottom: 1vh;
+  left: 9vw;
+  background-size: 100%;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: transparent;
+  border: none;
+  transform: rotate(90deg);
+
+}
+
+
+
+@media(orientation:portrait) {
+
+  body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .container {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    /* background-color: #000; */
+  }
+
+  video {
+    object-fit: cover;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+
+  .shoot {
+    display: block;
+  }
+
+  .atomBomb {
+    display: block;
+  }
+
+  .leftMove {
+    display: block;
+  }
+
+  .rightMove {
+    display: block;
+  }
+
+  .upMove {
+    display: block;
+  }
+
+  .downMove {
+    display: block;
+  }
+
+
+}
+
+@media(orientation:landscape) and (max-width: 1023px) {
+  .shoot {
+    display: block;
+  }
+
+  .leftMove {
+    display: block;
+    bottom: 10vh;
+  }
+
+  .rightMove {
+    display: block;
+    left: 13vw;
+    bottom: 10vh;
+  }
+
+  .upMove {
+    display: block;
+    left: 7vw;
+    bottom: 19vh;
+  }
+
+  .downMove {
+    display: block;
+    left: 7vw;
   }
 }
