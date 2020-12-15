@@ -54,9 +54,9 @@ class Game {
 
   #randomNewEnemy() {
     const randomNumber2 = Math.floor(Math.random() * 10) + 1;
-    const randomNumber = Math.floor(Math.random() * 5) + 1;
+    const randomNumber = Math.floor(Math.random() * 3) + 1;
     randomNumber2 % 10
-      ? randomNumber % 5
+      ? randomNumber % 3
         ? this.#createNewEnemy(
             this.#htmlELements.container,
             this.#enemiesInterval,
