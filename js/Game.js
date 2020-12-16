@@ -10,6 +10,10 @@ class Game {
     modal: document.querySelector("[data-modal]"),
     scoreInfo: document.querySelector("[data-score-info]"),
     button: document.querySelector("[data-button]"),
+    video: document.querySelector("video"),
+    film: document.querySelector("[data-film]"),
+    film2: document.querySelector("[data-film2]"),
+    film3: document.querySelector("[data-film3]"),
   };
   #ship = new Spaceship(
     this.#htmlELements.spaceship,
@@ -25,13 +29,16 @@ class Game {
   init() {
     this.#ship.init();
     this.#newGame();
-//     this.#htmlELements.button.addEventListener("click", () => this.#newGame());
-     this.#htmlELements.button.addEventListener("click", () =>
+    // this.#htmlELements.button.addEventListener("click", () => this.#newGame());
+    this.#htmlELements.button.addEventListener("click", () =>
       location.reload()
     );
   }
 
   #newGame() {
+    this.#htmlELements.film.style.display = "none";
+    this.#htmlELements.film2.style.display = "none";
+    this.#htmlELements.film3.style.display = "none";
     this.#htmlELements.modal.classList.add("hide");
     this.#enemiesInterval = 20;
     this.#lives = 3;
@@ -56,8 +63,11 @@ class Game {
   }
 
   #randomNewEnemy() {
+    const randomNumber3 = Math.floor(Math.random() * 2) + 1;
     const randomNumber2 = Math.floor(Math.random() * 10) + 1;
     const randomNumber = Math.floor(Math.random() * 3) + 1;
+
+    // randomNumber3 % 2 ?
     randomNumber2 % 10
       ? randomNumber % 3
         ? this.#createNewEnemy(
@@ -80,12 +90,26 @@ class Game {
           "explosion--huge",
           10
         );
+    // : this.#createNewEnemy(
+    //     this.#htmlELements.container,
+    //     this.#enemiesInterval * 2.5,
+    //     "enemy--asteroid",
+    //     "explosion--big"
+    //   );
   }
   #createNewEnemy(...params) {
     const enemy = new Enemy(...params);
     if (this.#enemies.length < 10) {
       enemy.init();
       this.#enemies.push(enemy);
+    }
+    if (this.#score > 50 && this.#score < 150) {
+      this.#createNewEnemy(
+        this.#htmlELements.container,
+        this.#enemiesInterval * 2.5,
+        "enemy--asteroid",
+        "explosion--big"
+      );
     }
   }
 
@@ -165,15 +189,29 @@ class Game {
       });
     });
   }
+
   #updateScore() {
     this.#score++;
-    if (!(this.#score % 5)) {
+    if (!(this.#score % 10)) {
       this.#enemiesInterval--;
     }
 
     this.#updateScoreText();
     if (!(this.#score % 100)) {
       this.#livesPlus();
+    }
+    this.#updateScoreText();
+    if (this.#score > 150 && this.#score <= 200) {
+      this.#htmlELements.film2.style.display = "none";
+      this.#htmlELements.film.style.display = "block";
+    }
+    if (this.#score > 50 && this.#score <= 150) {
+      this.#htmlELements.video.style.display = "none";
+      this.#htmlELements.film2.style.display = "block";
+    }
+    if (this.#score > 200) {
+      this.#htmlELements.film.style.display = "none";
+      this.#htmlELements.film3.style.display = "block";
     }
   }
 
