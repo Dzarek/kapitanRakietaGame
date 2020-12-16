@@ -125,6 +125,28 @@ video {
   transform: scale(2);
 }
 
+.enemy--asteroid {
+  width: var(--size-unit);
+  height: var(--size-unit);
+  background-position: center;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-image: url('../images/aestroid_brown.png');
+  animation: move-asteroid 2000ms steps(100) infinite;
+  position: fixed;
+
+}
+
+@keyframes move-asteroid {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 .explosion {
   width: var(--size-unit);
   height: var(--size-unit);
