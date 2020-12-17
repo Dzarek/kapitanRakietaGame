@@ -221,16 +221,16 @@ if (this.#score < 300) {
       this.#htmlELements.film3.style.display = "none";
       this.#htmlELements.film4.style.display = "block";
     }
-   if (this.#score == 10) {
+   if (this.#score == 300) {
       this.#createNewEnemy(
         this.#htmlELements.container,
-        this.#enemiesInterval * 1000,
+        this.#enemiesInterval * 100000000000000000000000000000000000000000000000000000000000000000000000,
         "enemy--boss",
         "explosion--boss",
         40
       );
     }
-    if (this.#score >= 10) {
+    if (this.#score >= 300) {
       this.#enemyShot();
     }
   }
@@ -238,7 +238,7 @@ if (this.#score < 300) {
   #enemyShot() {
     this.#createNewEnemy(
       this.#htmlELements.container,
-      this.#enemiesInterval * 2,
+      this.#enemiesInterval * 200000000000000000,
       "enemy--shot",
       "explosion"
     );
