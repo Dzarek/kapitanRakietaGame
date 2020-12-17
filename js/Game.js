@@ -224,10 +224,10 @@ if (this.#score < 300) {
    if (this.#score == 300) {
       this.#createNewEnemy(
         this.#htmlELements.container,
-        this.#enemiesInterval * 100000,
+        this.#enemiesInterval * 1000,
         "enemy--boss",
         "explosion--boss",
-        50
+        40
       );
     }
     if (this.#score >= 300) {
