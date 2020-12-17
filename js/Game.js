@@ -14,6 +14,7 @@ class Game {
     film: document.querySelector("[data-film]"),
     film2: document.querySelector("[data-film2]"),
     film3: document.querySelector("[data-film3]"),
+    film4: document.querySelector("[data-film4]"),
   };
   #ship = new Spaceship(
     this.#htmlELements.spaceship,
@@ -39,6 +40,7 @@ class Game {
     this.#htmlELements.film.style.display = "none";
     this.#htmlELements.film2.style.display = "none";
     this.#htmlELements.film3.style.display = "none";
+    this.#htmlELements.film4.style.display = "none";
     this.#htmlELements.modal.classList.add("hide");
     this.#enemiesInterval = 20;
     this.#lives = 3;
@@ -63,7 +65,8 @@ class Game {
   }
 
   #randomNewEnemy() {
-    const randomNumber3 = Math.floor(Math.random() * 2) + 1;
+if (this.#score < 300) {
+//     const randomNumber3 = Math.floor(Math.random() * 2) + 1;
     const randomNumber2 = Math.floor(Math.random() * 10) + 1;
     const randomNumber = Math.floor(Math.random() * 3) + 1;
 
@@ -96,6 +99,7 @@ class Game {
     //     "enemy--asteroid",
     //     "explosion--big"
     //   );
+}
   }
   #createNewEnemy(...params) {
     const enemy = new Enemy(...params);
@@ -209,15 +213,37 @@ class Game {
       this.#htmlELements.video.style.display = "none";
       this.#htmlELements.film2.style.display = "block";
     }
-    if (this.#score > 200 && this.#score <= 300) {
+    if (this.#score > 200 && this.#score < 300) {
       this.#htmlELements.film.style.display = "none";
       this.#htmlELements.film3.style.display = "block";
     }
- if (this.#score > 300) {
+ if (this.#score >= 300) {
       this.#htmlELements.film3.style.display = "none";
-      this.#htmlELements.video.style.display = "block";
+      this.#htmlELements.film4.style.display = "block";
+    }
+   if (this.#score == 300) {
+      this.#createNewEnemy(
+        this.#htmlELements.container,
+        this.#enemiesInterval * 100000,
+        "enemy--boss",
+        "explosion--boss",
+        50
+      );
+    }
+    if (this.#score >= 300) {
+      this.#enemyShot();
     }
   }
+
+  #enemyShot() {
+    this.#createNewEnemy(
+      this.#htmlELements.container,
+      this.#enemiesInterval * 2,
+      "enemy--shot",
+      "explosion"
+    );
+  }
+
 
   #livesPlus() {
     this.#lives++;
