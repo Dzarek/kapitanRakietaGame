@@ -209,9 +209,13 @@ class Game {
       this.#htmlELements.video.style.display = "none";
       this.#htmlELements.film2.style.display = "block";
     }
-    if (this.#score > 200) {
+    if (this.#score > 200 && this.#score <= 300) {
       this.#htmlELements.film.style.display = "none";
       this.#htmlELements.film3.style.display = "block";
+    }
+ if (this.#score > 300) {
+      this.#htmlELements.film3.style.display = "none";
+      this.#htmlELements.video.style.display = "block";
     }
   }
 
@@ -237,7 +241,7 @@ class Game {
   }
 }
 
-// window.onload = function () {
+window.onload = function () {
 const game = new Game();
 game.init();
-// };
+};
