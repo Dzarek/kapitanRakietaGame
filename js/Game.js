@@ -224,7 +224,7 @@ if (this.#score < 300) {
    if (this.#score == 300) {
       this.#createNewEnemy(
         this.#htmlELements.container,
-        this.#enemiesInterval * 100000000000000000000000000000000000000000000000000000000000000000000000,
+       (this.#enemiesInterval = 100000000000000000),
         "enemy--boss",
         "explosion--boss",
         40
@@ -238,7 +238,7 @@ if (this.#score < 300) {
   #enemyShot() {
     this.#createNewEnemy(
       this.#htmlELements.container,
-      this.#enemiesInterval * 200000000000000000,
+      (this.#enemiesInterval = 15),
       "enemy--shot",
       "explosion"
     );
