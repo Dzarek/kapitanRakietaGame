@@ -221,16 +221,16 @@ if (this.#score < 300) {
       this.#htmlELements.film3.style.display = "none";
       this.#htmlELements.film4.style.display = "block";
     }
-   if (this.#score == 300) {
+   if (this.#score == 10) {
       this.#createNewEnemy(
         this.#htmlELements.container,
-        this.#enemiesInterval * 1000,
+//         this.#enemiesInterval * 1000,
         "enemy--boss",
         "explosion--boss",
         40
       );
     }
-    if (this.#score >= 300) {
+    if (this.#score >= 10) {
       this.#enemyShot();
     }
   }
