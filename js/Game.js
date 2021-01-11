@@ -64,42 +64,52 @@ class Game {
     clearInterval(this.#checkPositionInterval);
   }
 
-  #randomNewEnemy() {
-if (this.#score < 300) {
-//     const randomNumber3 = Math.floor(Math.random() * 2) + 1;
-    const randomNumber2 = Math.floor(Math.random() * 10) + 1;
-    const randomNumber = Math.floor(Math.random() * 3) + 1;
+  #winGame() {
+    this.#enemies.forEach((enemy) => enemy.explode());
+    this.#enemies.length = 0;
+    clearInterval(this.#createEnemyInterval);
+    clearInterval(this.#checkPositionInterval);
+    this.#htmlELements.modal.classList.remove("hide");
+    this.#htmlELements.modal.style.opacity = ".9";
+    this.#htmlELements.scoreInfo.textContent = `Congratulations! You won!`;
+  }
 
-    // randomNumber3 % 2 ?
-    randomNumber2 % 10
-      ? randomNumber % 3
-        ? this.#createNewEnemy(
-            this.#htmlELements.container,
-            this.#enemiesInterval,
-            "enemy",
-            "explosion"
-          )
+  #randomNewEnemy() {
+    if (this.#score < 300) {
+      //     const randomNumber3 = Math.floor(Math.random() * 2) + 1;
+      const randomNumber2 = Math.floor(Math.random() * 10) + 1;
+      const randomNumber = Math.floor(Math.random() * 3) + 1;
+
+      // randomNumber3 % 2 ?
+      randomNumber2 % 10
+        ? randomNumber % 3
+          ? this.#createNewEnemy(
+              this.#htmlELements.container,
+              this.#enemiesInterval,
+              "enemy",
+              "explosion"
+            )
+          : this.#createNewEnemy(
+              this.#htmlELements.container,
+              this.#enemiesInterval * 2,
+              "enemy--big",
+              "explosion--big",
+              3
+            )
         : this.#createNewEnemy(
             this.#htmlELements.container,
-            this.#enemiesInterval * 2,
-            "enemy--big",
-            "explosion--big",
-            3
-          )
-      : this.#createNewEnemy(
-          this.#htmlELements.container,
-          this.#enemiesInterval * 2.5,
-          "enemy--huge",
-          "explosion--huge",
-          10
-        );
-    // : this.#createNewEnemy(
-    //     this.#htmlELements.container,
-    //     this.#enemiesInterval * 2.5,
-    //     "enemy--asteroid",
-    //     "explosion--big"
-    //   );
-}
+            this.#enemiesInterval * 2.5,
+            "enemy--huge",
+            "explosion--huge",
+            10
+          );
+      // : this.#createNewEnemy(
+      //     this.#htmlELements.container,
+      //     this.#enemiesInterval * 2.5,
+      //     "enemy--asteroid",
+      //     "explosion--big"
+      //   );
+    }
   }
   #createNewEnemy(...params) {
     const enemy = new Enemy(...params);
@@ -217,22 +227,29 @@ if (this.#score < 300) {
       this.#htmlELements.film.style.display = "none";
       this.#htmlELements.film3.style.display = "block";
     }
- if (this.#score >= 300) {
+    if (this.#score >= 300) {
       this.#htmlELements.film3.style.display = "none";
       this.#htmlELements.film4.style.display = "block";
     }
-   if (this.#score == 300) {
-      this.#createNewEnemy(
-        this.#htmlELements.container,
-       (this.#enemiesInterval = 100000000000000000),
-        "enemy--boss",
-        "explosion--boss",
-        40
-      );
+    if (this.#score == 300) {
+      this.#bossEnemy();
     }
+
     if (this.#score >= 300) {
       this.#enemyShot();
     }
+    if (this.#score == 350) {
+      this.#winGame();
+    }
+  }
+  #bossEnemy() {
+    this.#createNewEnemy(
+      this.#htmlELements.container,
+      (this.#enemiesInterval = 100000000000000000),
+      "enemy--boss",
+      "explosion--boss",
+      50
+    );
   }
 
   #enemyShot() {
@@ -243,7 +260,6 @@ if (this.#score < 300) {
       "explosion"
     );
   }
-
 
   #livesPlus() {
     this.#lives++;
@@ -268,6 +284,6 @@ if (this.#score < 300) {
 }
 
 window.onload = function () {
-const game = new Game();
-game.init();
+  const game = new Game();
+  game.init();
 };
