@@ -30,10 +30,7 @@ class Game {
   init() {
     this.#ship.init();
     this.#newGame();
-    // this.#htmlELements.button.addEventListener("click", () => this.#newGame());
-    this.#htmlELements.button.addEventListener("click", () =>
-      location.reload()
-    );
+    this.#htmlELements.button.addEventListener("click", () => this.#newGame());
   }
 
   #newGame() {
